@@ -23,6 +23,7 @@ type
     procedure BtnEditarClick(Sender: TObject);
     procedure BtnExcluirClick(Sender: TObject);
     procedure DBGrid1DblClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     procedure Silenciar;
     procedure Tocar;
@@ -35,12 +36,27 @@ type
 
 var
   FormPrincipal: TFormPrincipal;
+  MyMsg: LongInt;
+  OldWindowProc: Pointer;
+  function NewWindowProc(WH: hWnd; Msg, PW, PL: LongInt): LongInt stdcall;
 
 implementation
 
 {$R *.dfm}
 
-uses UnitAgendamento, UnitDM1;
+uses UnitDM1, UnitAgendamento;
+
+function NewWindowProc(WH: hWnd; Msg, PW, PL: LongInt): LongInt stdcall;
+begin
+  if Msg = MyMsg then
+  begin
+    SendMessage(Application.Handle, WM_SYSCOMMAND, SC_RESTORE, 0);
+    SetForegroundWindow(Application.Handle);
+    Result := 0;
+    exit;
+  end;
+  Result := CallWindowProc(OldWindowProc, WH, Msg, PW, PL);
+end;
 
 { TFormPrincipal }
 
@@ -72,11 +88,19 @@ end;
 procedure TFormPrincipal.FormCreate(Sender: TObject);
 var segundos: smallint;
 begin
+  MyMsg := RegisterWindowMessage('X11APP');
+  OldWindowProc := Pointer(SetWindowLong(Handle, GWL_WNDPROC,
+  LongInt(@NewWindowProc)));
   LabelHora.Caption := FormatDateTime('hh:nn', Now);
   Timer1.Enabled := False;
   segundos := 60 - strtoint(FormatDateTime('ss', Now));
   Timer1.Interval := segundos * 1000;
   Timer1.Enabled := True;
+end;
+
+procedure TFormPrincipal.FormDestroy(Sender: TObject);
+begin
+  SetWindowLong(Handle, GWL_WNDPROC, LongInt(OldWindowProc));
 end;
 
 procedure TFormPrincipal.Narrar(frase: string);

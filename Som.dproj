@@ -94,16 +94,13 @@
         </DelphiCompile>
         <DCCReference Include="UnitAgendamento.pas">
             <Form>FormAgendamento</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UnitDM1.pas">
             <Form>DM1</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="UnitPrincipal.pas">
             <Form>FormPrincipal</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
