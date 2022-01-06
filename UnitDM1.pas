@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MSAcc,
   FireDAC.Phys.MSAccDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
   FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, Vcl.Forms;
 
 type
   TDM1 = class(TDataModule)
@@ -53,6 +53,9 @@ implementation
 
 procedure TDM1.DataModuleCreate(Sender: TObject);
 begin
+  FDConnection1.Connected := False;
+  FDConnection1.Params.Database := ExpandFileName(ExtractFileDir(Application.ExeName)) + '\Som.accdb';
+  FDConnection1.Connected := True;
   tbAgendamentos.Open;
 end;
 
