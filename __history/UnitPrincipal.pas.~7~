@@ -1,0 +1,75 @@
+unit UnitPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormPrincipal = class(TForm)
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    BtnNovo: TButton;
+    BtnEditar: TButton;
+    BtnExcluir: TButton;
+    LabelHora: TLabel;
+    Timer1: TTimer;
+    procedure Timer1Timer(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure BtnNovoClick(Sender: TObject);
+    procedure BtnEditarClick(Sender: TObject);
+    procedure BtnExcluirClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormPrincipal: TFormPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitAgendamento, UnitDM1;
+
+{ TFormPrincipal }
+
+procedure TFormPrincipal.BtnEditarClick(Sender: TObject);
+begin
+  FormAgendamento.ShowModal;
+end;
+
+procedure TFormPrincipal.BtnExcluirClick(Sender: TObject);
+begin
+if (MessageBox(0, PChar('Tem certeza que deseja excluir esse registro?'), PChar('Atenção'), MB_ICONWARNING or MB_YESNO or MB_TOPMOST or MB_SYSTEMMODAL or MB_DEFBUTTON2) = mrYes) then
+  DM1.tbAgendamentos.Delete;
+end;
+
+procedure TFormPrincipal.BtnNovoClick(Sender: TObject);
+begin
+  DM1.tbAgendamentos.Append;
+  FormAgendamento.ShowModal;
+end;
+
+procedure TFormPrincipal.DBGrid1DblClick(Sender: TObject);
+begin
+  if DM1.tbAgendamentos.IsEmpty = False then
+    FormAgendamento.ShowModal;
+end;
+
+procedure TFormPrincipal.FormCreate(Sender: TObject);
+begin
+  LabelHora.Caption := FormatDateTime('hh:nn', Now);
+end;
+
+procedure TFormPrincipal.Timer1Timer(Sender: TObject);
+begin
+  LabelHora.Caption := FormatDateTime('hh:nn', Now);
+end;
+
+end.

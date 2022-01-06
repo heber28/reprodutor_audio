@@ -1,0 +1,24 @@
+object FormSom: TFormSom
+  Left = 0
+  Top = 0
+  Caption = 'Som'
+  ClientHeight = 261
+  ClientWidth = 418
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'Database=C:\Som\Som.accdb'
+      'DriverID=MSAcc')
+    LoginPrompt = False
+    Left = 55
+    Top = 24
+  end
+end

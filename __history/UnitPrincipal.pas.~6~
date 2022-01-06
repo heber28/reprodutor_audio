@@ -1,0 +1,145 @@
+unit UnitPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormPrincipal = class(TForm)
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    BtnNovo: TButton;
+    BtnEditar: TButton;
+    BtnExcluir: TButton;
+    LabelHora: TLabel;
+    Timer1: TTimer;
+    procedure Timer1Timer(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure BtnNovoClick(Sender: TObject);
+    procedure BtnEditarClick(Sender: TObject);
+    procedure BtnExcluirClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure FitGrid(const Grid: TDBGrid; const CoverWhiteSpace: Boolean = True);
+  public
+    { Public declarations }
+  end;
+
+var
+  FormPrincipal: TFormPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitAgendamento, UnitDM1;
+
+{ TFormPrincipal }
+
+procedure TFormPrincipal.BtnEditarClick(Sender: TObject);
+begin
+  FormAgendamento.ShowModal;
+end;
+
+procedure TFormPrincipal.BtnExcluirClick(Sender: TObject);
+begin
+if (MessageBox(0, PChar('Tem certeza que deseja excluir esse registro?'), PChar('Atenção'), MB_ICONWARNING or MB_YESNO or MB_TOPMOST or MB_SYSTEMMODAL or MB_DEFBUTTON2) = mrYes) then
+  DM1.tbAgendamentos.Delete;
+end;
+
+procedure TFormPrincipal.BtnNovoClick(Sender: TObject);
+begin
+  DM1.tbAgendamentos.Append;
+  FormAgendamento.ShowModal;
+end;
+
+procedure TFormPrincipal.DBGrid1DblClick(Sender: TObject);
+begin
+  if DM1.tbAgendamentos.IsEmpty = False then
+    FormAgendamento.ShowModal;
+end;
+
+procedure TFormPrincipal.FitGrid(const Grid: TDBGrid;
+  const CoverWhiteSpace: Boolean);
+const
+  C_Add = 3;
+var
+  DS: TDataSet;
+  BM: TBookmark;
+  I, W, VisibleColumnsCount: Integer;
+  A: array of Integer;
+  VisibleColumns: array of TColumn;
+begin
+  DS := Grid.DataSource.DataSet;
+  if Assigned(DS) then
+  begin
+    VisibleColumnsCount := 0;
+    SetLength(VisibleColumns, Grid.Columns.Count);
+    for I := 0 to Grid.Columns.Count - 1 do
+      if Assigned(Grid.Columns[I].Field) and (Grid.Columns[I].Visible) then
+      begin
+        VisibleColumns[VisibleColumnsCount] := Grid.Columns[I];
+        Inc(VisibleColumnsCount);
+      end;
+    SetLength(VisibleColumns, VisibleColumnsCount);
+
+    DS.DisableControls;
+    BM := DS.GetBookmark;
+    try
+      DS.First;
+      SetLength(A, VisibleColumnsCount);
+      while not DS.Eof do
+      begin
+        for I := 0 to VisibleColumnsCount - 1 do
+        begin
+          W :=
+            Grid.Canvas.TextWidth(DS.FieldByName(VisibleColumns[I].Field.FieldName).DisplayText);
+          if A[I] < W then
+            A[I] := W;
+        end;
+        DS.Next;
+      end;
+      //if fieldwidth is smaller than Row 0 (field names) fix
+      for I := 0 to VisibleColumnsCount - 1 do
+      begin
+        W := Grid.Canvas.TextWidth(VisibleColumns[I].Field.FieldName);
+        if A[I] < W then
+          A[I] := W;
+      end;
+
+      W := 0;
+      if CoverWhiteSpace then
+      begin
+        for I := 0 to VisibleColumnsCount - 1 do
+          Inc(W, A[I] + C_Add);
+        W := (Grid.ClientWidth - W - 20) div VisibleColumnsCount;
+        if W < 0 then
+          W := 0;
+      end;
+
+      for I := 0 to VisibleColumnsCount - 1 do
+        VisibleColumns[I].Width := A[I] + C_Add + W;
+      DS.GotoBookmark(BM);
+    finally
+      DS.FreeBookmark(BM);
+      DS.EnableControls;
+    end;
+  end;
+end;
+
+
+procedure TFormPrincipal.FormCreate(Sender: TObject);
+begin
+  LabelHora.Caption := FormatDateTime('hh:nn', Now);
+end;
+
+procedure TFormPrincipal.Timer1Timer(Sender: TObject);
+begin
+  LabelHora.Caption := FormatDateTime('hh:nn', Now);
+end;
+
+end.

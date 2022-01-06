@@ -1,0 +1,287 @@
+object FormSom: TFormSom
+  Left = 0
+  Top = 0
+  Caption = 'Som'
+  ClientHeight = 292
+  ClientWidth = 698
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object LabelHorario: TLabel
+    Left = 21
+    Top = 81
+    Width = 35
+    Height = 13
+    Caption = 'Hor'#225'rio'
+  end
+  object Label2: TLabel
+    Left = 21
+    Top = 131
+    Width = 37
+    Height = 13
+    Caption = 'Arquivo'
+  end
+  object Label3: TLabel
+    Left = 21
+    Top = 158
+    Width = 27
+    Height = 13
+    Caption = 'Frase'
+  end
+  object LabelAviso: TLabel
+    Left = 70
+    Top = 200
+    Width = 514
+    Height = 13
+    Caption = 
+      'Caso n'#227'o selecione o Arquivo, o wave n'#227'o ser'#225' tocado. Se n'#227'o pre' +
+      'encher a Frase, a frase n'#227'o ser'#225' falada'
+  end
+  object Label1: TLabel
+    Left = 196
+    Top = 81
+    Width = 124
+    Height = 13
+    Caption = 'Das 00:00 '#224's 23:59 horas'
+  end
+  object Label4: TLabel
+    Left = 70
+    Top = 232
+    Width = 391
+    Height = 13
+    Caption = 
+      'Caso a pron'#250'ncia da frase fique r'#225'pida demais, use v'#237'rgulas para' +
+      ' dar mais pausas'
+  end
+  object DBNavigator1: TDBNavigator
+    Left = 21
+    Top = 21
+    Width = 225
+    Height = 25
+    DataSource = dsAgendamentos
+    VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbInsert, nbDelete, nbEdit, nbPost, nbCancel]
+    Hints.Strings = (
+      'Primeiro registro'
+      'Registro anterior'
+      'Pr'#243'ximo registro'
+      #217'ltimo registro'
+      'Inserir registro'
+      'Excluir registro'
+      'Editar registro'
+      'Salvar registro'
+      'Cancelar registro'
+      'Atualizar dados'
+      'Aplicar atualiza'#231#245'es'
+      'Cancelar atualiza'#231#245'es')
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+  end
+  object DBEditHorario: TDBEdit
+    Left = 70
+    Top = 78
+    Width = 117
+    Height = 21
+    DataField = 'horario'
+    DataSource = dsAgendamentos
+    MaxLength = 5
+    TabOrder = 1
+  end
+  object DBCheckBoxSegunda: TDBCheckBox
+    Left = 70
+    Top = 105
+    Width = 63
+    Height = 17
+    Caption = 'Segunda'
+    DataField = 'segunda'
+    DataSource = dsAgendamentos
+    TabOrder = 2
+  end
+  object DBCheckBoxTerca: TDBCheckBox
+    Left = 147
+    Top = 105
+    Width = 47
+    Height = 17
+    Caption = 'Ter'#231'a'
+    DataField = 'terca'
+    DataSource = dsAgendamentos
+    TabOrder = 3
+  end
+  object DBCheckBoxQuarta: TDBCheckBox
+    Left = 224
+    Top = 105
+    Width = 55
+    Height = 17
+    Caption = 'Quarta'
+    DataField = 'quarta'
+    DataSource = dsAgendamentos
+    TabOrder = 4
+  end
+  object DBCheckBoxQuinta: TDBCheckBox
+    Left = 301
+    Top = 105
+    Width = 47
+    Height = 17
+    Caption = 'Quinta'
+    DataField = 'quinta'
+    DataSource = dsAgendamentos
+    TabOrder = 5
+  end
+  object DBCheckBoxSexta: TDBCheckBox
+    Left = 378
+    Top = 105
+    Width = 47
+    Height = 17
+    Caption = 'Sexta'
+    DataField = 'sexta'
+    DataSource = dsAgendamentos
+    TabOrder = 6
+  end
+  object DBCheckBoxSabado: TDBCheckBox
+    Left = 455
+    Top = 105
+    Width = 55
+    Height = 17
+    Caption = 'S'#225'bado'
+    DataField = 'sabado'
+    DataSource = dsAgendamentos
+    TabOrder = 7
+  end
+  object DBCheckBoxDomingo: TDBCheckBox
+    Left = 533
+    Top = 105
+    Width = 55
+    Height = 17
+    Caption = 'Domingo'
+    DataField = 'domingo'
+    DataSource = dsAgendamentos
+    TabOrder = 8
+  end
+  object DBEdit2: TDBEdit
+    Left = 70
+    Top = 128
+    Width = 518
+    Height = 21
+    TabStop = False
+    Color = clBtnFace
+    DataField = 'arquivo'
+    DataSource = dsAgendamentos
+    ReadOnly = True
+    TabOrder = 9
+  end
+  object DBEditFrase: TDBEdit
+    Left = 70
+    Top = 155
+    Width = 518
+    Height = 21
+    DataField = 'frase'
+    DataSource = dsAgendamentos
+    TabOrder = 11
+  end
+  object BtnEscolher: TButton
+    Left = 599
+    Top = 126
+    Width = 73
+    Height = 25
+    Caption = 'Escolher'
+    TabOrder = 10
+    OnClick = BtnEscolherClick
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'Database=C:\Som\Som.accdb'
+      'DriverID=MSAcc')
+    Connected = True
+    LoginPrompt = False
+    Left = 287
+    Top = 8
+  end
+  object tbAgendamentos: TFDTable
+    Active = True
+    AfterOpen = tbAgendamentosAfterOpen
+    OnNewRecord = tbAgendamentosNewRecord
+    IndexFieldNames = 'id'
+    Connection = FDConnection1
+    UpdateOptions.UpdateTableName = 'agendamentos'
+    Exclusive = True
+    TableName = 'agendamentos'
+    Left = 368
+    Top = 8
+    object tbAgendamentosid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object tbAgendamentoshorario: TSQLTimeStampField
+      FieldName = 'horario'
+      Origin = 'horario'
+      DisplayFormat = '00:00'
+      EditMask = '!90:00;1;_'
+    end
+    object tbAgendamentossegunda: TBooleanField
+      FieldName = 'segunda'
+      Origin = 'segunda'
+      Required = True
+    end
+    object tbAgendamentosterca: TBooleanField
+      FieldName = 'terca'
+      Origin = 'terca'
+      Required = True
+    end
+    object tbAgendamentosquarta: TBooleanField
+      FieldName = 'quarta'
+      Origin = 'quarta'
+      Required = True
+    end
+    object tbAgendamentosquinta: TBooleanField
+      FieldName = 'quinta'
+      Origin = 'quinta'
+      Required = True
+    end
+    object tbAgendamentossexta: TBooleanField
+      FieldName = 'sexta'
+      Origin = 'sexta'
+      Required = True
+    end
+    object tbAgendamentossabado: TBooleanField
+      FieldName = 'sabado'
+      Origin = 'sabado'
+      Required = True
+    end
+    object tbAgendamentosdomingo: TBooleanField
+      FieldName = 'domingo'
+      Origin = 'domingo'
+      Required = True
+    end
+    object tbAgendamentosarquivo: TWideStringField
+      FieldName = 'arquivo'
+      Origin = 'arquivo'
+      Size = 255
+    end
+    object tbAgendamentosfrase: TWideStringField
+      FieldName = 'frase'
+      Origin = 'frase'
+      Size = 255
+    end
+  end
+  object dsAgendamentos: TDataSource
+    DataSet = tbAgendamentos
+    Left = 456
+    Top = 8
+  end
+  object SingleInstance1: TSingleInstance
+    Left = 544
+    Top = 8
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 616
+    Top = 8
+  end
+end

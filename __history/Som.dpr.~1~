@@ -1,0 +1,14 @@
+program Som;
+
+uses
+  Vcl.Forms,
+  UnitSom in 'UnitSom.pas' {FormSom};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFormSom, FormSom);
+  Application.Run;
+end.

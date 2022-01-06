@@ -1,0 +1,184 @@
+object FormSom: TFormSom
+  Left = 0
+  Top = 0
+  Caption = 'Som'
+  ClientHeight = 524
+  ClientWidth = 822
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 822
+    Height = 54
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 0
+    object DBNavigator1: TDBNavigator
+      Left = 21
+      Top = 13
+      Width = 240
+      Height = 25
+      DataSource = DataSourceAgendamentos
+      TabOrder = 0
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 54
+    Width = 822
+    Height = 470
+    Align = alClient
+    DataSource = DataSourceAgendamentos
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'id'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'horario'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'segunda'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'terca'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'quarta'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'quinta'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'sexta'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'sabado'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'domingo'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'arquivo'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'frase'
+        Visible = True
+      end>
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'Database=C:\Som\Som.accdb'
+      'DriverID=MSAcc')
+    Connected = True
+    LoginPrompt = False
+    Left = 287
+    Top = 8
+  end
+  object FDTableAgendamentos: TFDTable
+    Active = True
+    IndexFieldNames = 'id'
+    Connection = FDConnection1
+    UpdateOptions.UpdateTableName = 'agendamentos'
+    Exclusive = True
+    TableName = 'agendamentos'
+    Left = 384
+    Top = 8
+    object FDTableAgendamentosid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object FDTableAgendamentoshorario: TSQLTimeStampField
+      FieldName = 'horario'
+      Origin = 'horario'
+      DisplayFormat = '00:00'
+      EditMask = '!90:00;1;_'
+    end
+    object FDTableAgendamentossegunda: TBooleanField
+      FieldName = 'segunda'
+      Origin = 'segunda'
+      Required = True
+    end
+    object FDTableAgendamentosterca: TBooleanField
+      FieldName = 'terca'
+      Origin = 'terca'
+      Required = True
+    end
+    object FDTableAgendamentosquarta: TBooleanField
+      FieldName = 'quarta'
+      Origin = 'quarta'
+      Required = True
+    end
+    object FDTableAgendamentosquinta: TBooleanField
+      FieldName = 'quinta'
+      Origin = 'quinta'
+      Required = True
+    end
+    object FDTableAgendamentossexta: TBooleanField
+      FieldName = 'sexta'
+      Origin = 'sexta'
+      Required = True
+    end
+    object FDTableAgendamentossabado: TBooleanField
+      FieldName = 'sabado'
+      Origin = 'sabado'
+      Required = True
+    end
+    object FDTableAgendamentosdomingo: TBooleanField
+      FieldName = 'domingo'
+      Origin = 'domingo'
+      Required = True
+    end
+    object FDTableAgendamentosarquivo: TWideStringField
+      FieldName = 'arquivo'
+      Origin = 'arquivo'
+      Size = 255
+    end
+    object FDTableAgendamentosfrase: TWideStringField
+      FieldName = 'frase'
+      Origin = 'frase'
+      Size = 255
+    end
+  end
+  object DataSourceAgendamentos: TDataSource
+    DataSet = FDTableAgendamentos
+    Left = 512
+    Top = 8
+  end
+end

@@ -1,0 +1,125 @@
+object DM1: TDM1
+  OldCreateOrder = False
+  Height = 455
+  Width = 565
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'Database=C:\Som\Som.accdb'
+      'DriverID=MSAcc')
+    Connected = True
+    LoginPrompt = False
+    Left = 47
+    Top = 32
+  end
+  object tbAgendamentos: TFDTable
+    OnCalcFields = tbAgendamentosCalcFields
+    OnNewRecord = tbAgendamentosNewRecord
+    IndexFieldNames = 'id'
+    Connection = FDConnection1
+    UpdateOptions.UpdateTableName = 'agendamentos'
+    Exclusive = True
+    TableName = 'agendamentos'
+    Left = 128
+    Top = 32
+    object tbAgendamentosid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object tbAgendamentoshorario: TSQLTimeStampField
+      DisplayWidth = 5
+      FieldName = 'horario'
+      Origin = 'horario'
+      DisplayFormat = 'hh:nn'
+      EditMask = '!90:00;1;_'
+    end
+    object tbAgendamentossegunda: TBooleanField
+      FieldName = 'segunda'
+      Origin = 'segunda'
+      Required = True
+    end
+    object tbAgendamentosterca: TBooleanField
+      FieldName = 'terca'
+      Origin = 'terca'
+      Required = True
+    end
+    object tbAgendamentosquarta: TBooleanField
+      FieldName = 'quarta'
+      Origin = 'quarta'
+      Required = True
+    end
+    object tbAgendamentosquinta: TBooleanField
+      FieldName = 'quinta'
+      Origin = 'quinta'
+      Required = True
+    end
+    object tbAgendamentossexta: TBooleanField
+      FieldName = 'sexta'
+      Origin = 'sexta'
+      Required = True
+    end
+    object tbAgendamentossabado: TBooleanField
+      FieldName = 'sabado'
+      Origin = 'sabado'
+      Required = True
+    end
+    object tbAgendamentosdomingo: TBooleanField
+      FieldName = 'domingo'
+      Origin = 'domingo'
+      Required = True
+    end
+    object tbAgendamentosarquivo: TWideStringField
+      FieldName = 'arquivo'
+      Origin = 'arquivo'
+      Size = 255
+    end
+    object tbAgendamentosfrase: TWideStringField
+      FieldName = 'frase'
+      Origin = 'frase'
+      Size = 255
+    end
+    object tbAgendamentosseg: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'seg'
+      Size = 1
+      Calculated = True
+    end
+    object tbAgendamentoster: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'ter'
+      Size = 1
+      Calculated = True
+    end
+    object tbAgendamentosqua: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'qua'
+      Size = 1
+      Calculated = True
+    end
+    object tbAgendamentosqui: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'qui'
+      Size = 1
+      Calculated = True
+    end
+    object tbAgendamentossex: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'sex'
+      Size = 1
+      Calculated = True
+    end
+    object tbAgendamentossab: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'sab'
+      Size = 1
+      Calculated = True
+    end
+    object tbAgendamentosdom: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'dom'
+      Size = 1
+      Calculated = True
+    end
+  end
+end

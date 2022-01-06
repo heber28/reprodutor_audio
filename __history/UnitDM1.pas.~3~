@@ -1,0 +1,55 @@
+unit UnitDM1;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MSAcc,
+  FireDAC.Phys.MSAccDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
+
+type
+  TDM1 = class(TDataModule)
+    FDConnection1: TFDConnection;
+    tbAgendamentos: TFDTable;
+    tbAgendamentosid: TFDAutoIncField;
+    tbAgendamentoshorario: TSQLTimeStampField;
+    tbAgendamentossegunda: TBooleanField;
+    tbAgendamentosterca: TBooleanField;
+    tbAgendamentosquarta: TBooleanField;
+    tbAgendamentosquinta: TBooleanField;
+    tbAgendamentossexta: TBooleanField;
+    tbAgendamentossabado: TBooleanField;
+    tbAgendamentosdomingo: TBooleanField;
+    tbAgendamentosarquivo: TWideStringField;
+    tbAgendamentosfrase: TWideStringField;
+    procedure tbAgendamentosNewRecord(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DM1: TDM1;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TDM1.tbAgendamentosNewRecord(DataSet: TDataSet);
+begin
+  tbAgendamentos.FieldByName('segunda').AsBoolean := False;
+  tbAgendamentos.FieldByName('terca').AsBoolean := False;
+  tbAgendamentos.FieldByName('quarta').AsBoolean := False;
+  tbAgendamentos.FieldByName('quinta').AsBoolean := False;
+  tbAgendamentos.FieldByName('sexta').AsBoolean := False;
+  tbAgendamentos.FieldByName('sabado').AsBoolean := False;
+  tbAgendamentos.FieldByName('domingo').AsBoolean := False;
+end;
+
+end.

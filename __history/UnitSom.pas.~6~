@@ -1,0 +1,161 @@
+unit UnitSom;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MSAcc,
+  FireDAC.Phys.MSAccDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+  FireDAC.Comp.DataSet, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls,
+  Vcl.StdCtrls, Vcl.Mask, Sic;
+
+type
+  TFormSom = class(TForm)
+    FDConnection1: TFDConnection;
+    tbAgendamentos: TFDTable;
+    dsAgendamentos: TDataSource;
+    tbAgendamentosid: TFDAutoIncField;
+    tbAgendamentoshorario: TSQLTimeStampField;
+    tbAgendamentossegunda: TBooleanField;
+    tbAgendamentosterca: TBooleanField;
+    tbAgendamentosquarta: TBooleanField;
+    tbAgendamentosquinta: TBooleanField;
+    tbAgendamentossexta: TBooleanField;
+    tbAgendamentossabado: TBooleanField;
+    tbAgendamentosdomingo: TBooleanField;
+    tbAgendamentosarquivo: TWideStringField;
+    tbAgendamentosfrase: TWideStringField;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    DBNavigator1: TDBNavigator;
+    DBEdit1: TDBEdit;
+    DBCheckBox1: TDBCheckBox;
+    DBCheckBox2: TDBCheckBox;
+    DBCheckBox3: TDBCheckBox;
+    DBCheckBox4: TDBCheckBox;
+    DBCheckBox5: TDBCheckBox;
+    DBCheckBox6: TDBCheckBox;
+    DBCheckBox7: TDBCheckBox;
+    DBEdit2: TDBEdit;
+    DBEdit3: TDBEdit;
+    BtnEscolher: TButton;
+    SingleInstance1: TSingleInstance;
+    OpenDialog1: TOpenDialog;
+    procedure tbAgendamentosAfterOpen(DataSet: TDataSet);
+    procedure tbAgendamentosNewRecord(DataSet: TDataSet);
+    procedure BtnEscolherClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure FitGrid(const Grid: TDBGrid; const CoverWhiteSpace: Boolean = True);
+  public
+    { Public declarations }
+  end;
+
+var
+  FormSom: TFormSom;
+
+implementation
+
+{$R *.dfm}
+
+{ TFormSom }
+
+procedure TFormSom.tbAgendamentosAfterOpen(DataSet: TDataSet);
+begin
+  //FitGrid(DbGrid1);
+end;
+
+procedure TFormSom.tbAgendamentosNewRecord(DataSet: TDataSet);
+begin
+  tbAgendamentos.FieldByName('segunda').AsBoolean := False;
+  tbAgendamentos.FieldByName('terca').AsBoolean := False;
+  tbAgendamentos.FieldByName('quarta').AsBoolean := False;
+  tbAgendamentos.FieldByName('quinta').AsBoolean := False;
+  tbAgendamentos.FieldByName('sexta').AsBoolean := False;
+  tbAgendamentos.FieldByName('sabado').AsBoolean := False;
+  tbAgendamentos.FieldByName('domingo').AsBoolean := False;
+end;
+
+procedure TFormSom.BtnEscolherClick(Sender: TObject);
+begin
+  if OpenDialog1.Execute then
+  begin
+    if tbAgendamentos.State in dsEditModes = False then
+      tbAgendamentos.Edit;
+    tbAgendamentos.FieldByName('arquivo').AsString := OpenDialog1.FileName;
+  end;
+end;
+
+procedure TFormSom.FitGrid(const Grid: TDBGrid; const CoverWhiteSpace: Boolean);
+const
+  C_Add = 3;
+var
+  DS: TDataSet;
+  BM: TBookmark;
+  I, W, VisibleColumnsCount: Integer;
+  A: array of Integer;
+  VisibleColumns: array of TColumn;
+begin
+  DS := Grid.DataSource.DataSet;
+  if Assigned(DS) then
+  begin
+    VisibleColumnsCount := 0;
+    SetLength(VisibleColumns, Grid.Columns.Count);
+    for I := 0 to Grid.Columns.Count - 1 do
+      if Assigned(Grid.Columns[I].Field) and (Grid.Columns[I].Visible) then
+      begin
+        VisibleColumns[VisibleColumnsCount] := Grid.Columns[I];
+        Inc(VisibleColumnsCount);
+      end;
+    SetLength(VisibleColumns, VisibleColumnsCount);
+
+    DS.DisableControls;
+    BM := DS.GetBookmark;
+    try
+      DS.First;
+      SetLength(A, VisibleColumnsCount);
+      while not DS.Eof do
+      begin
+        for I := 0 to VisibleColumnsCount - 1 do
+        begin
+          W :=
+            Grid.Canvas.TextWidth(DS.FieldByName(VisibleColumns[I].Field.FieldName).DisplayText);
+          if A[I] < W then
+            A[I] := W;
+        end;
+        DS.Next;
+      end;
+      //if fieldwidth is smaller than Row 0 (field names) fix
+      for I := 0 to VisibleColumnsCount - 1 do
+      begin
+        W := Grid.Canvas.TextWidth(VisibleColumns[I].Field.FieldName);
+        if A[I] < W then
+          A[I] := W;
+      end;
+
+      W := 0;
+      if CoverWhiteSpace then
+      begin
+        for I := 0 to VisibleColumnsCount - 1 do
+          Inc(W, A[I] + C_Add);
+        W := (Grid.ClientWidth - W - 20) div VisibleColumnsCount;
+        if W < 0 then
+          W := 0;
+      end;
+
+      for I := 0 to VisibleColumnsCount - 1 do
+        VisibleColumns[I].Width := A[I] + C_Add + W;
+      DS.GotoBookmark(BM);
+    finally
+      DS.FreeBookmark(BM);
+      DS.EnableControls;
+    end;
+  end;
+end;
+
+
+end.

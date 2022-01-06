@@ -1,0 +1,16 @@
+program Som;
+
+uses
+  Vcl.Forms,
+  UnitSom in 'UnitSom.pas' {FormSom},
+  UnitDM1 in 'UnitDM1.pas' {DM1: TDataModule};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFormSom, FormSom);
+  Application.CreateForm(TDM1, DM1);
+  Application.Run;
+end.
