@@ -36,6 +36,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "C:\Som\Win32\Debug\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Som\Som.accdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Som\SoundVolumeView.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Som\SoundVolumeView.cfg"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Som\Instalacao\AccessDatabaseEngine.exe"; DestDir: "{app}"; AfterInstall: RunOtherInstaller
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
