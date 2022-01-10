@@ -16,13 +16,13 @@ AppVersion={#MyAppVersion}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName=C:\RepAudio\{#MyAppName}
+DefaultDirName={%HOMEPATH}\{#MyAppName}
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 OutputDir=C:\Som\Instalacao
-OutputBaseFilename=instalacao
+OutputBaseFilename=Setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -38,7 +38,9 @@ Source: "C:\Som\Win32\Debug\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignorever
 Source: "C:\Som\Som.accdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Som\SoundVolumeView.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Som\SoundVolumeView.cfg"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Som\Instalacao\AccessDatabaseEngine.exe"; DestDir: "{app}"; AfterInstall: RunOtherInstaller
+Source: "C:\Som\Instalacao\AccessDatabaseEngine.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Som\Win32\Debug\Wave\*"; DestDir: "{app}\Wave"; Flags: ignoreversion recursesubdirs
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -49,17 +51,6 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Code]
-procedure RunOtherInstaller;
-var
-  ResultCode: Integer;
-begin
-  if not Exec(ExpandConstant('{app}\AccessDatabaseEngine.exe'), '', '', SW_SHOWNORMAL,
-    ewWaitUntilTerminated, ResultCode)
-  then
-    MsgBox('Houve uma falha ao fazer a instalação do Access Database Engine' + #13#10 +
-      SysErrorMessage(ResultCode), mbError, MB_OK);
-end;
-
 function IsWindowsVersionOrNewer(Major, Minor: Integer): Boolean;
 var
   Version: TWindowsVersion;
@@ -83,6 +74,8 @@ begin
     Result := False;
   end
   else
+    MsgBox('Após a instalação, por favor instale o Microsoft Access Database Engine.' + #13 +            
+           'O arquivo de instalação se encontra na pasta onde o programa foi instalado', mbInformation, MB_OK);
     Result := True;
 end;
 

@@ -7,13 +7,11 @@ object DM1: TDM1
     Params.Strings = (
       'Database=C:\Som\Som.accdb'
       'DriverID=MSAcc')
-    Connected = True
     LoginPrompt = False
     Left = 47
     Top = 32
   end
   object tbAgendamentos: TFDTable
-    Active = True
     OnCalcFields = tbAgendamentosCalcFields
     OnNewRecord = tbAgendamentosNewRecord
     IndexFieldNames = 'id'
